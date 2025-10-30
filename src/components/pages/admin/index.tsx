@@ -178,10 +178,11 @@ export default function Admin() {
 
 	// Calculate gender statistics
 	const maleCount = users.filter(
-		(u) => u.gender && u.gender.toLowerCase() === "Эркек"
+		(u) => u.gender?.toLowerCase() === "эркек"
 	).length;
+
 	const femaleCount = users.filter(
-		(u) => u.gender && u.gender.toLowerCase() === "Аял"
+		(u) => u.gender?.toLowerCase() === "аял"
 	).length;
 
 	return (
