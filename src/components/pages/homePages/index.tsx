@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import { User } from "@/types/User";
 import api from "@/lib/api";
 import { Users } from "lucide-react";
-import { FaUserTie } from "react-icons/fa";
-import { GrUserManager } from "react-icons/gr";
-import { IoSearch } from "react-icons/io5";
+ 
 
 export default function HomePages() {
 	const [users, setUsers] = useState<User[]>([]);
@@ -169,9 +167,10 @@ export default function HomePages() {
 								{[
 									"Аты",
 									"Фамилия",
+									"Жыл",
 									"Телефон",
-									"Пол",
-									"Шаар",
+									"Жынысы",
+									"Прописка",
 									"Адрес",
 									"ИНН",
 								].map((header) => (
@@ -204,6 +203,10 @@ export default function HomePages() {
 										<td className="p-3 text-slate-100 font-medium whitespace-nowrap">
 											{user.lastName}
 										</td>
+										<td className="p-3 text-slate-300 whitespace-nowrap">
+											{user.year || "—"}
+										</td>
+
 										<td className="p-3 text-slate-300 whitespace-nowrap">
 											{user.phone}
 										</td>

@@ -23,6 +23,7 @@ export default function Admin() {
 		city: "",
 		address: "",
 		inn: "",
+		year: new Date().getFullYear(),
 	});
 	const [editingId, setEditingId] = useState<number | null>(null);
 	const [search, setSearch] = useState("");
@@ -294,9 +295,10 @@ export default function Admin() {
 								{[
 									"Аты",
 									"Фамилия",
+									"Жыл",
 									"Телефон",
-									"Пол",
-									"Шаар",
+									"Жынысы",
+									"Прописка",
 									"Адрес",
 									"ИНН",
 									"",
@@ -317,6 +319,7 @@ export default function Admin() {
 										className="hover:bg-slate-700/50 transition-all">
 										<td className="p-4 text-white">{user.firstName}</td>
 										<td className="p-4 text-white">{user.lastName}</td>
+										<td className="p-4 text-slate-300">{user.year || "—"}</td>
 										<td className="p-4 text-slate-300">{user.phone}</td>
 										<td className="p-4">
 											<span
@@ -398,6 +401,16 @@ export default function Admin() {
 									className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800"
 									disabled={loading}
 								/>
+								<input
+									type="number"
+									name="year"
+									value={form.year || ""}
+									onChange={handleChange}
+									placeholder="Жыл *"
+									className="border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition text-slate-800"
+									disabled={loading}
+								/>
+
 								<input
 									name="phone"
 									value={form.phone}
