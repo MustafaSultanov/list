@@ -287,7 +287,6 @@ export default function Admin() {
 					адам
 				</div>
 
-				{/* Table */}
 				<div className="overflow-x-auto rounded-3xl shadow-xl border border-slate-700 bg-slate-800">
 					<table className="w-full border-collapse">
 						<thead className="bg-slate-900/70">
