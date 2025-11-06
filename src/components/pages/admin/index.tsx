@@ -266,7 +266,6 @@ export default function Admin() {
 					</button>
 				</div>
 
-				{/* Error Alert */}
 				{error && (
 					<div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3 text-red-700">
 						<AlertCircle className="w-5 h-5 " />
