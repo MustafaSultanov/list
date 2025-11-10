@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { User } from "@/types/User";
 import api from "@/lib/api";
 import { Users } from "lucide-react";
- 
 
 export default function HomePages() {
 	const [users, setUsers] = useState<User[]>([]);
@@ -171,7 +170,7 @@ export default function HomePages() {
 									"Жынысы",
 									"Прописка",
 									"Адрес",
-									"ИНН",
+									// "ИНН",
 								].map((header) => (
 									<th
 										key={header}
@@ -231,9 +230,9 @@ export default function HomePages() {
 											title={user.address}>
 											{user.address}
 										</td>
-										<td className="p-3 text-slate-300 font-mono whitespace-nowrap">
+										{/* <td className="p-3 text-slate-300 font-mono whitespace-nowrap">
 											{user.inn}
-										</td>
+										</td> */}
 									</tr>
 								))
 							) : (
