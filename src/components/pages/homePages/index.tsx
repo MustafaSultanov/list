@@ -15,60 +15,31 @@ export default function HomePages() {
 	useEffect(() => {
 		let isMounted = true;
 
-		const getAllUsers = async () => {
+		const getUsers = async () => {
 			try {
 				setLoading(true);
-				let allUsers: any[] = [];
-				let page = 1;
-				let hasMore = true;
+				// Баардык маалыматты бир запроско алуу
+				const res = await api.get("?limit=500");
 
-				// Баардык беттерди алуу (Mokky.dev pagination үчүн)
-				while (hasMore && page <= 20) {
-					// максимум 20 бет = 200 адам
-					try {
-						const res = await api.get(`?page=${page}&limit=10`);
+				if (!isMounted) return;
 
-						if (!isMounted) return;
-
-						let pageData = [];
-						if (Array.isArray(res.data)) {
-							pageData = res.data;
-						} else if (
-							res.data &&
-							res.data.items &&
-							Array.isArray(res.data.items)
-						) {
-							pageData = res.data.items;
-						} else if (
-							res.data &&
-							res.data.data &&
-							Array.isArray(res.data.data)
-						) {
-							pageData = res.data.data;
-						}
-
-						// Эгер маалымат келбесе, токтотуу
-						if (pageData.length === 0) {
-							hasMore = false;
-							break;
-						}
-
-						allUsers = [...allUsers, ...pageData];
-
-						// Эгер 10ден аз элемент келсе, акыркы бет экенин билдирет
-						if (pageData.length < 10) {
-							hasMore = false;
-						} else {
-							page++;
-						}
-					} catch (err) {
-						console.error(`Page ${page} error:`, err);
-						hasMore = false;
-					}
+				let userData = [];
+				if (Array.isArray(res.data)) {
+					userData = res.data;
+				} else if (
+					res.data &&
+					res.data.items &&
+					Array.isArray(res.data.items)
+				) {
+					userData = res.data.items;
+				} else if (res.data && res.data.data && Array.isArray(res.data.data)) {
+					userData = res.data.data;
 				}
 
+				console.log("Жүктөлгөн адамдар саны:", userData.length);
+
 				// Convert _id to id and reverse to show newest first
-				const mappedUsers = allUsers
+				const mappedUsers = userData
 					.map((user: any) => ({
 						...user,
 						id: user._id || user.id,
@@ -80,7 +51,7 @@ export default function HomePages() {
 					setLoading(false);
 				}
 			} catch (err) {
-				console.error("Error loading users:", err);
+				console.error("Ката:", err);
 				if (isMounted) {
 					setUsers([]);
 					setLoading(false);
@@ -88,7 +59,7 @@ export default function HomePages() {
 			}
 		};
 
-		getAllUsers();
+		getUsers();
 
 		return () => {
 			isMounted = false;
