@@ -9,6 +9,7 @@ export default function HomePages() {
 	const [users, setUsers] = useState<User[]>([]);
 	const [search, setSearch] = useState("");
 	const [genderFilter, setGenderFilter] = useState<string>("all");
+	const [cityFilter, setCityFilter] = useState<string>("all");
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -27,7 +28,6 @@ export default function HomePages() {
 					userData = res.data.data;
 				}
 
-				// Convert _id to id and reverse to show newest first
 				const mappedUsers = userData
 					.map((user: any) => ({
 						...user,
@@ -51,7 +51,7 @@ export default function HomePages() {
 		getUsers();
 
 		return () => {
-			isMounted = true;
+			isMounted = false;
 		};
 	}, []);
 
@@ -63,6 +63,7 @@ export default function HomePages() {
 				const phone = (u.phone ?? "").toLowerCase();
 				const inn = (u.inn ?? "").toLowerCase();
 				const searchLower = search.toLowerCase();
+
 				const matchesSearch =
 					fullName.includes(searchLower) ||
 					phone.includes(searchLower) ||
@@ -72,24 +73,28 @@ export default function HomePages() {
 					genderFilter === "all" ||
 					(u.gender && u.gender.toLowerCase() === genderFilter.toLowerCase());
 
-				return matchesSearch && matchesGender;
+				const matchesCity =
+					cityFilter === "all" ||
+					(u.city && u.city.toLowerCase() === cityFilter.toLowerCase());
+
+				return matchesSearch && matchesGender && matchesCity;
 		  })
 		: [];
 
 	const maleCount = users.filter(
 		(u) => u.gender?.toLowerCase() === "эркек"
 	).length;
-
 	const femaleCount = users.filter(
 		(u) => u.gender?.toLowerCase() === "аял"
 	).length;
 
-	// const totalCount = users.length;
+	// Уникалдуу шаарлар (прописка) чыгарып алуу
+	const cities = Array.from(new Set(users.map((u) => u.city).filter(Boolean)));
 
 	return (
-		<div className="min-h-screen  bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] p-6 text-gray-100">
+		<div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] p-6 text-gray-100">
 			<div className="w-full py-[50px] mx-auto container">
-				<div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
 					{[
 						{
 							label: "Бардыгы",
@@ -125,20 +130,37 @@ export default function HomePages() {
 						</div>
 					))}
 
+					{/* Gender filter */}
 					<div className="bg-slate-800/60 rounded-2xl shadow-lg p-5 border border-slate-700">
-						<p className="text-slate-400 text-sm mb-2">Фильтр</p>
+						<p className="text-slate-400 text-sm mb-2">Жынысы боюнча</p>
 						<select
 							value={genderFilter}
 							onChange={(e) => setGenderFilter(e.target.value)}
 							className="w-full px-3 py-2 rounded-xl border border-slate-600 bg-slate-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
 							<option value="all">Бардыгы</option>
-							<option value="Эркек">Эркектер</option>
-							<option value="Аял">Аялдар</option>
+							<option value="эркек">Эркектер</option>
+							<option value="аял">Аялдар</option>
+						</select>
+					</div>
+
+					{/* City filter */}
+					<div className="bg-slate-800/60 rounded-2xl shadow-lg p-5 border border-slate-700">
+						<p className="text-slate-400 text-sm mb-2">Прописка боюнча</p>
+						<select
+							value={cityFilter}
+							onChange={(e) => setCityFilter(e.target.value)}
+							className="w-full px-3 py-2 rounded-xl border border-slate-600 bg-slate-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+							<option value="all">Бардыгы</option>
+							{cities.map((city) => (
+								<option key={city} value={city.toLowerCase()}>
+									{city}
+								</option>
+							))}
 						</select>
 					</div>
 				</div>
 
-				<div className="flex   md:flex-row items-center justify-between mb-6 gap-4">
+				<div className="flex md:flex-row items-center justify-between mb-6 gap-4">
 					<input
 						type="text"
 						placeholder="Издөө (аты, телефон, ИНН)..."
@@ -148,16 +170,12 @@ export default function HomePages() {
 					/>
 				</div>
 
-				{/* Results count */}
 				<div className="mb-3 flex gap-1 text-white text-sm">
-					Тизме:
-					<span className="font-semibold text-white">
-						{filtered.length}
-					</span>{" "}
+					Тизме:{" "}
+					<span className="font-semibold text-white">{filtered.length}</span>{" "}
 					адам
 				</div>
 
-				{/* Table */}
 				<div className="overflow-x-auto rounded-3xl shadow-xl border border-slate-700 bg-slate-800">
 					<table className="min-w-[800px] w-full border-collapse">
 						<thead className="bg-[#1e2229]">
@@ -170,7 +188,6 @@ export default function HomePages() {
 									"Жынысы",
 									"Прописка",
 									"Адрес",
-									// "ИНН",
 								].map((header) => (
 									<th
 										key={header}
@@ -204,21 +221,18 @@ export default function HomePages() {
 										<td className="p-3 text-slate-300 whitespace-nowrap">
 											{user.year || "—"}
 										</td>
-
 										<td className="p-3 text-slate-300 whitespace-nowrap">
 											{user.phone}
 										</td>
 										<td className="p-3 whitespace-nowrap">
 											<span
 												className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs md:text-sm font-medium ${
-													user.gender?.toLowerCase() === "Эркек"
+													user.gender?.toLowerCase() === "эркек"
 														? "bg-blue-900 text-blue-300"
-														: user.gender?.toLowerCase() === "Аял"
+														: user.gender?.toLowerCase() === "аял"
 														? "bg-pink-900 text-pink-300"
 														: "bg-gray-700 text-gray-300"
 												}`}>
-												{user.gender?.toLowerCase() === "Эркек" && "♂"}
-												{user.gender?.toLowerCase() === "Аял" && "♀"}
 												{user.gender || "—"}
 											</span>
 										</td>
@@ -230,15 +244,12 @@ export default function HomePages() {
 											title={user.address}>
 											{user.address}
 										</td>
-										{/* <td className="p-3 text-slate-300 font-mono whitespace-nowrap">
-											{user.inn}
-										</td> */}
 									</tr>
 								))
 							) : (
 								<tr>
 									<td colSpan={8} className="p-10 text-center text-gray-500">
-										{search || genderFilter !== "all"
+										{search || genderFilter !== "all" || cityFilter !== "all"
 											? "Издөө боюнча эч нерсе табылган жок"
 											: "Маалымат жок"}
 									</td>
