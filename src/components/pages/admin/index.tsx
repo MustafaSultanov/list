@@ -38,7 +38,8 @@ export default function Admin() {
 		try {
 			setLoading(true);
 			setError(null);
-			const res = await api.get("");
+			const res = await api.get("?limit=500");
+
 			let userData = [];
 
 			if (Array.isArray(res.data)) {

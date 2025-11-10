@@ -18,22 +18,19 @@ export default function HomePages() {
 		const getUsers = async () => {
 			try {
 				setLoading(true);
-				// Баардык маалыматты бир запроско алуу
-				const res = await api.get("?limit=500");
+				// 🔹 Тышкы API'ге эмес, өзүбүздүн прокси аркылуу чакырабыз
+				const res = await fetch("/api/users");
+				const data = await res.json();
 
 				if (!isMounted) return;
 
 				let userData = [];
-				if (Array.isArray(res.data)) {
-					userData = res.data;
-				} else if (
-					res.data &&
-					res.data.items &&
-					Array.isArray(res.data.items)
-				) {
-					userData = res.data.items;
-				} else if (res.data && res.data.data && Array.isArray(res.data.data)) {
-					userData = res.data.data;
+				if (Array.isArray(data)) {
+					userData = data;
+				} else if (data?.items && Array.isArray(data.items)) {
+					userData = data.items;
+				} else if (data?.data && Array.isArray(data.data)) {
+					userData = data.data;
 				}
 
 				console.log("Жүктөлгөн адамдар саны:", userData.length);
