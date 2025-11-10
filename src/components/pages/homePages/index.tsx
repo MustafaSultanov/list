@@ -15,20 +15,60 @@ export default function HomePages() {
 	useEffect(() => {
 		let isMounted = true;
 
-		const getUsers = async () => {
+		const getAllUsers = async () => {
 			try {
 				setLoading(true);
-				const res = await api.get("");
-				if (!isMounted) return;
+				let allUsers: any[] = [];
+				let page = 1;
+				let hasMore = true;
 
-				let userData = [];
-				if (Array.isArray(res.data)) {
-					userData = res.data;
-				} else if (res.data && res.data.data && Array.isArray(res.data.data)) {
-					userData = res.data.data;
+				// Баардык беттерди алуу (Mokky.dev pagination үчүн)
+				while (hasMore && page <= 20) {
+					// максимум 20 бет = 200 адам
+					try {
+						const res = await api.get(`?page=${page}&limit=10`);
+
+						if (!isMounted) return;
+
+						let pageData = [];
+						if (Array.isArray(res.data)) {
+							pageData = res.data;
+						} else if (
+							res.data &&
+							res.data.items &&
+							Array.isArray(res.data.items)
+						) {
+							pageData = res.data.items;
+						} else if (
+							res.data &&
+							res.data.data &&
+							Array.isArray(res.data.data)
+						) {
+							pageData = res.data.data;
+						}
+
+						// Эгер маалымат келбесе, токтотуу
+						if (pageData.length === 0) {
+							hasMore = false;
+							break;
+						}
+
+						allUsers = [...allUsers, ...pageData];
+
+						// Эгер 10ден аз элемент келсе, акыркы бет экенин билдирет
+						if (pageData.length < 10) {
+							hasMore = false;
+						} else {
+							page++;
+						}
+					} catch (err) {
+						console.error(`Page ${page} error:`, err);
+						hasMore = false;
+					}
 				}
 
-				const mappedUsers = userData
+				// Convert _id to id and reverse to show newest first
+				const mappedUsers = allUsers
 					.map((user: any) => ({
 						...user,
 						id: user._id || user.id,
@@ -40,7 +80,7 @@ export default function HomePages() {
 					setLoading(false);
 				}
 			} catch (err) {
-				console.error(err);
+				console.error("Error loading users:", err);
 				if (isMounted) {
 					setUsers([]);
 					setLoading(false);
@@ -48,7 +88,7 @@ export default function HomePages() {
 			}
 		};
 
-		getUsers();
+		getAllUsers();
 
 		return () => {
 			isMounted = false;
@@ -200,7 +240,7 @@ export default function HomePages() {
 						<tbody className="divide-y divide-slate-700">
 							{loading ? (
 								<tr>
-									<td colSpan={8} className="p-10 text-center text-gray-400">
+									<td colSpan={7} className="p-10 text-center text-gray-400">
 										<div className="flex items-center justify-center gap-2">
 											<div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
 											Жүктөлүүдө...
@@ -248,7 +288,7 @@ export default function HomePages() {
 								))
 							) : (
 								<tr>
-									<td colSpan={8} className="p-10 text-center text-gray-500">
+									<td colSpan={7} className="p-10 text-center text-gray-500">
 										{search || genderFilter !== "all" || cityFilter !== "all"
 											? "Издөө боюнча эч нерсе табылган жок"
 											: "Маалымат жок"}
