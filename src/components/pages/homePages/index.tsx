@@ -2,7 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { User } from "@/types/User";
-import api from "@/lib/api";
+// import api from "@/lib/api";
 import { Users } from "lucide-react";
 
 export default function HomePages() {

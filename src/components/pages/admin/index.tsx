@@ -38,14 +38,16 @@ export default function Admin() {
 		try {
 			setLoading(true);
 			setError(null);
-			const res = await api.get("?limit=500");
+			const res = await fetch("/api/users");
+			const data = await res.json();
 
 			let userData = [];
-
-			if (Array.isArray(res.data)) {
-				userData = res.data;
-			} else if (res.data.data && Array.isArray(res.data.data)) {
-				userData = res.data.data;
+			if (Array.isArray(data)) {
+				userData = data;
+			} else if (data?.items && Array.isArray(data.items)) {
+				userData = data.items;
+			} else if (data?.data && Array.isArray(data.data)) {
+				userData = data.data;
 			}
 
 			// Convert _id to id and reverse to show newest first

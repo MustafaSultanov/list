@@ -1,4 +1,4 @@
-export interface User {
+export interface User extends Record<string, unknown> {
 	id?: number;
 	_id?: number;
 	firstName: string;
@@ -8,5 +8,11 @@ export interface User {
 	city: string;
 	address: string;
 	inn: string;
-	year?: number; // <- бул жаңы талаа
+	year?: number;
 }
+
+// Же альтернатива - utility type колдонуу
+export type UserData = Omit<User, "id" | "_id"> & {
+	id?: number;
+	_id?: number;
+};
