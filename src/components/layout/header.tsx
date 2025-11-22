@@ -15,54 +15,7 @@ export default function Header() {
 					className="text-2xl font-semibold tracking-wide hover:text-blue-400 transition-colors duration-300">
 					SULTANOV
 				</Link>
-
-				{/* Desktop menu */}
-				<nav className="hidden md:flex items-center gap-8">
-					<a className="hover:text-blue-400 transition-colors">Башкы бет</a>
-					<a className="hover:text-blue-400 transition-colors">Жөнүндө</a>
-					<a className="hover:text-blue-400 transition-colors">Кызматтар</a>
-					<a className="hover:text-blue-400 transition-colors">Байланыш</a>
-				</nav>
-
-				{/* Burger icon (mobile only) */}
-				<button
-					onClick={() => setMenuOpen(true)}
-					className="md:hidden text-white hover:text-blue-400 transition-colors">
-					<Menu size={28} />
-				</button>
 			</div>
-
-			{/* Mobile menu overlay */}
-			{menuOpen && (
-				<div className="fixed inset-0 bg-[#0f172a]/95 flex flex-col items-center justify-center gap-8 text-xl text-white z-50 transition-all duration-300">
-					<button
-						onClick={() => setMenuOpen(false)}
-						className="absolute top-5 right-6 text-gray-300 hover:text-blue-400 transition-colors">
-						<X size={32} />
-					</button>
-
-					<a
-						onClick={() => setMenuOpen(false)}
-						className="hover:text-blue-400 transition-colors">
-						Башкы бет
-					</a>
-					<a
-						onClick={() => setMenuOpen(false)}
-						className="hover:text-blue-400 transition-colors">
-						Жөнүндө
-					</a>
-					<a
-						onClick={() => setMenuOpen(false)}
-						className="hover:text-blue-400 transition-colors">
-						Кызматтар
-					</a>
-					<a
-						onClick={() => setMenuOpen(false)}
-						className="hover:text-blue-400 transition-colors">
-						Байланыш
-					</a>
-				</div>
-			)}
 		</header>
 	);
 }
