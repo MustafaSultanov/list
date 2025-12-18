@@ -180,7 +180,6 @@ export default function Admin() {
 		  })
 		: [];
 
-	// Calculate gender statistics
 	const maleCount = users.filter(
 		(u) => u.gender?.toLowerCase() === "эркек"
 	).length;
