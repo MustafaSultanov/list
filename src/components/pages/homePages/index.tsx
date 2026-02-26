@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { User } from "@/types/User";
 // import api from "@/lib/api";
 import { Users, FileDown } from "lucide-react";
 
 export default function HomePages() {
 	const [users, setUsers] = useState<User[]>([]);
+	const [loading, setLoading] = useState(false);
 	const [search, setSearch] = useState("");
 	const [genderFilter, setGenderFilter] = useState<string>("all");
 	const [cityFilter, setCityFilter] = useState<string>("all");
 	const [yearFilter, setYearFilter] = useState<string>("all");
 	const [letterFilter, setLetterFilter] = useState<string>("all");
-	const [loading, setLoading] = useState(true);
+	// const [loading, setLoading] = useState(true);
 
 	// Кыргыз алфавити
 	const alphabet = [
@@ -54,56 +55,57 @@ export default function HomePages() {
 		"Я",
 	];
 
-	useEffect(() => {
-		let isMounted = true;
+	// useEffect(() => {
+	// 	let isMounted = true;
 
-		const getUsers = async () => {
-			try {
-				setLoading(true);
-				// 🔹 Тышкы API'ге эмес, өзүбүздүн прокси аркылуу чакырабыз
-				const res = await fetch("/api/users");
-				const data = await res.json();
+	// 	const getUsers = async () => {
+	// 		try {
+	// 			setLoading(true);
+	// 			// 🔹 Тышкы API'ге эмес, өзүбүздүн прокси аркылуу чакырабыз
+	// 			// const res = await fetch("/api/users");
+	// 			const res = await fetch("/apiss/users");
+	// 			const data = await res.json();
 
-				if (!isMounted) return;
+	// 			if (!isMounted) return;
 
-				let userData = [];
-				if (Array.isArray(data)) {
-					userData = data;
-				} else if (data?.items && Array.isArray(data.items)) {
-					userData = data.items;
-				} else if (data?.data && Array.isArray(data.data)) {
-					userData = data.data;
-				}
+	// 			let userData = [];
+	// 			if (Array.isArray(data)) {
+	// 				userData = data;
+	// 			} else if (data?.items && Array.isArray(data.items)) {
+	// 				userData = data.items;
+	// 			} else if (data?.data && Array.isArray(data.data)) {
+	// 				userData = data.data;
+	// 			}
 
-				console.log("Жүктөлгөн адамдар саны:", userData.length);
+	// 			console.log("Жүктөлгөн адамдар саны:", userData.length);
 
-				// Convert _id to id and reverse to show newest first
-				const mappedUsers = userData
-					.map((user: any) => ({
-						...user,
-						id: user._id || user.id,
-					}))
-					.reverse();
+	// 			// Convert _id to id and reverse to show newest first
+	// 			const mappedUsers = userData
+	// 				.map((user: any) => ({
+	// 					...user,
+	// 					id: user._id || user.id,
+	// 				}))
+	// 				.reverse();
 
-				if (isMounted) {
-					setUsers(mappedUsers);
-					setLoading(false);
-				}
-			} catch (err) {
-				console.error("Ката:", err);
-				if (isMounted) {
-					setUsers([]);
-					setLoading(false);
-				}
-			}
-		};
+	// 			if (isMounted) {
+	// 				setUsers(mappedUsers);
+	// 				setLoading(false);
+	// 			}
+	// 		} catch (err) {
+	// 			console.error("Ката:", err);
+	// 			if (isMounted) {
+	// 				setUsers([]);
+	// 				setLoading(false);
+	// 			}
+	// 		}
+	// 	};
 
-		getUsers();
+	// 	getUsers();
 
-		return () => {
-			isMounted = false;
-		};
-	}, []);
+	// 	return () => {
+	// 		isMounted = false;
+	// 	};
+	// }, []);
 
 	const filtered = Array.isArray(users)
 		? users.filter((u) => {

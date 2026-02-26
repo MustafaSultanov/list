@@ -38,7 +38,8 @@ export default function Admin() {
 		try {
 			setLoading(true);
 			setError(null);
-			const res = await fetch("/api/users");
+			// const res = await fetch("/api/users");
+			const res = await fetch("/apiss/users");
 			const data = await res.json();
 
 			let userData = [];
