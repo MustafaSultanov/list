@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {  useState } from "react";
-import { User } from "@/types/User";
+// import { User } from "@/types/User";
 // import api from "@/lib/api";
 import { Users, FileDown } from "lucide-react";
 
 export default function HomePages() {
-	const [users, setUsers] = useState<User[]>([]);
-	const [loading, setLoading] = useState(false);
+	// const [users, setUsers] = useState<User[]>([]);
+	// const [loading, setLoading] = useState(false);
 	const [search, setSearch] = useState("");
 	const [genderFilter, setGenderFilter] = useState<string>("all");
 	const [cityFilter, setCityFilter] = useState<string>("all");
@@ -107,72 +107,72 @@ export default function HomePages() {
 	// 	};
 	// }, []);
 
-	const filtered = Array.isArray(users)
-		? users.filter((u) => {
-				const fullName = `${u.firstName ?? ""} ${
-					u.lastName ?? ""
-				}`.toLowerCase();
-				const phone = (u.phone ?? "").toLowerCase();
-				const inn = (u.inn ?? "").toLowerCase();
-				const yearStr = (u.year ?? "").toString();
-				const searchLower = search.toLowerCase();
+	// const filtered = Array.isArray(users)
+	// 	? users.filter((u) => {
+	// 			const fullName = `${u.firstName ?? ""} ${
+	// 				u.lastName ?? ""
+	// 			}`.toLowerCase();
+	// 			const phone = (u.phone ?? "").toLowerCase();
+	// 			const inn = (u.inn ?? "").toLowerCase();
+	// 			const yearStr = (u.year ?? "").toString();
+	// 			const searchLower = search.toLowerCase();
 
-				// Толук дал келүү үчүн издөө логикасы
-				const matchesSearch =
-					fullName.includes(searchLower) ||
-					phone.includes(searchLower) ||
-					inn.includes(searchLower) ||
-					yearStr === searchLower;
+	// 			// Толук дал келүү үчүн издөө логикасы
+	// 			const matchesSearch =
+	// 				fullName.includes(searchLower) ||
+	// 				phone.includes(searchLower) ||
+	// 				inn.includes(searchLower) ||
+	// 				yearStr === searchLower;
 
-				const matchesGender =
-					genderFilter === "all" ||
-					(u.gender && u.gender.toLowerCase() === genderFilter.toLowerCase());
+	// 			const matchesGender =
+	// 				genderFilter === "all" ||
+	// 				(u.gender && u.gender.toLowerCase() === genderFilter.toLowerCase());
 
-				const matchesCity =
-					cityFilter === "all" ||
-					(u.city && u.city.toLowerCase() === cityFilter.toLowerCase());
+	// 			const matchesCity =
+	// 				cityFilter === "all" ||
+	// 				(u.city && u.city.toLowerCase() === cityFilter.toLowerCase());
 
-				const matchesYear = yearFilter === "all" || yearStr === yearFilter;
+	// 			const matchesYear = yearFilter === "all" || yearStr === yearFilter;
 
-				// Аты боюнча биринчи тамга (фамилия эмес!)
-				const matchesLetter =
-					letterFilter === "all" ||
-					(u.firstName &&
-						u.firstName.trim().toUpperCase().charAt(0) === letterFilter);
+	// 			// Аты боюнча биринчи тамга (фамилия эмес!)
+	// 			const matchesLetter =
+	// 				letterFilter === "all" ||
+	// 				(u.firstName &&
+	// 					u.firstName.trim().toUpperCase().charAt(0) === letterFilter);
 
-				return (
-					matchesSearch &&
-					matchesGender &&
-					matchesCity &&
-					matchesYear &&
-					matchesLetter
-				);
-		  })
-		: [];
+	// 			return (
+	// 				matchesSearch &&
+	// 				matchesGender &&
+	// 				matchesCity &&
+	// 				matchesYear &&
+	// 				matchesLetter
+	// 			);
+	// 	  })
+	// 	: [];
 
-	const maleCount = users.filter(
-		(u) => u.gender?.toLowerCase() === "эркек"
-	).length;
-	const femaleCount = users.filter(
-		(u) => u.gender?.toLowerCase() === "аял"
-	).length;
+	// const maleCount = users.filter(
+	// 	(u) => u.gender?.toLowerCase() === "эркек"
+	// ).length;
+	// const femaleCount = users.filter(
+	// 	(u) => u.gender?.toLowerCase() === "аял"
+	// ).length;
 
 	// Уникалдуу шаарлар (прописка) чыгарып алуу
-	const cities = Array.from(new Set(users.map((u) => u.city).filter(Boolean)));
+	// const cities = Array.from(new Set(users.map((u) => u.city).filter(Boolean)));
 
 	// Уникалдуу жылдар чыгарып алуу
-	const years = Array.from(
-		new Set(users.map((u) => u.year?.toString()).filter(Boolean))
-	).sort((a, b) => Number(b) - Number(a));
+	// const years = Array.from(
+	// 	new Set(users.map((u) => u.year?.toString()).filter(Boolean))
+	// ).sort((a, b) => Number(b) - Number(a));
 
 	// Ар бир тамга үчүн канча адам бар экенин эсептөө
-	const letterCounts = alphabet.map((letter) => ({
-		letter,
-		count: users.filter(
-			(u) =>
-				u.firstName && u.firstName.trim().toUpperCase().charAt(0) === letter
-		).length,
-	}));
+	// const letterCounts = alphabet.map((letter) => ({
+	// 	letter,
+	// 	count: users.filter(
+	// 		(u) =>
+	// 			u.firstName && u.firstName.trim().toUpperCase().charAt(0) === letter
+	// 	).length,
+	// }));
 
 	// PDF экспорт функциясы (HTML → PDF ыкма менен)
 	const exportToPDF = () => {
@@ -185,126 +185,126 @@ export default function HomePages() {
 
 		const currentDate = new Date().toLocaleDateString("ru-RU");
 
-		const htmlContent = `
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<meta charset="UTF-8">
-				<title>Катталган адамдардын тизмеси</title>
-				<style>
-					@page { 
-						size: A4 landscape; 
-						margin: 10mm;
-					}
-					* {
-						margin: 0;
-						padding: 0;
-						box-sizing: border-box;
-					}
-					body {
-						font-family: 'Arial', sans-serif;
-						font-size: 11pt;
-						color: #333;
-					}
-					.header {
-						text-align: center;
-						margin-bottom: 15px;
-						padding-bottom: 10px;
-						border-bottom: 2px solid #1e293b;
-					}
-					.header h1 {
-						font-size: 18pt;
-						color: #1e293b;
-						margin-bottom: 5px;
-					}
-					.header .info {
-						font-size: 10pt;
-						color: #666;
-					}
-					table {
-						width: 100%;
-						border-collapse: collapse;
-						margin-top: 10px;
-					}
-					th {
-						background-color: #1e293b;
-						color: white;
-						padding: 10px 8px;
-						text-align: left;
-						font-weight: bold;
-						font-size: 11pt;
-						border: 1px solid #1e293b;
-					}
-					td {
-						padding: 8px;
-						border: 1px solid #ddd;
-						font-size: 10pt;
-					}
-					tr:nth-child(even) {
-						background-color: #f8fafc;
-					}
-					tr:hover {
-						background-color: #e2e8f0;
-					}
-					.footer {
-						margin-top: 15px;
-						text-align: center;
-						font-size: 9pt;
-						color: #666;
-					}
-					@media print {
-						body { 
-							print-color-adjust: exact;
-							-webkit-print-color-adjust: exact;
-						}
-					}
-				</style>
-			</head>
-			<body>
-				<div class="header">
-					<h1>Катталган адамдардын тизмеси</h1>
-					<div class="info">
-						Басып чыгарылган күнү: ${currentDate} | Бардыгы: ${filtered.length} адам
-					</div>
-				</div>
-				<table>
-					<thead>
-						<tr>
-							<th>Аты</th>
-							<th>Фамилия</th>
-							<th>Жыл</th>
-							<th>Телефон</th>
-							<th>Жынысы</th>
-							<th>Прописка</th>
-							<th>Адрес</th>
-						</tr>
-					</thead>
-					<tbody>
-						${filtered
-							.map(
-								(user) => `
-							<tr>
-								<td>${user.firstName || ""}</td>
-								<td>${user.lastName || ""}</td>
-								<td>${user.year || ""}</td>
-								<td>${user.phone || ""}</td>
-								<td>${user.gender || ""}</td>
-								<td>${user.city || ""}</td>
-								<td>${user.address || ""}</td>
-							</tr>
-						`
-							)
-							.join("")}
-					</tbody>
-				</table>
-				<div class="footer">
-					Документ автоматтык түрдө түзүлгөн
-				</div>
-			</body>
-			</html>
-		`;
+		// const htmlContent = `
+		// 	<!DOCTYPE html>
+		// 	<html>
+		// 	<head>
+		// 		<meta charset="UTF-8">
+		// 		<title>Катталган адамдардын тизмеси</title>
+		// 		<style>
+		// 			@page { 
+		// 				size: A4 landscape; 
+		// 				margin: 10mm;
+		// 			}
+		// 			* {
+		// 				margin: 0;
+		// 				padding: 0;
+		// 				box-sizing: border-box;
+		// 			}
+		// 			body {
+		// 				font-family: 'Arial', sans-serif;
+		// 				font-size: 11pt;
+		// 				color: #333;
+		// 			}
+		// 			.header {
+		// 				text-align: center;
+		// 				margin-bottom: 15px;
+		// 				padding-bottom: 10px;
+		// 				border-bottom: 2px solid #1e293b;
+		// 			}
+		// 			.header h1 {
+		// 				font-size: 18pt;
+		// 				color: #1e293b;
+		// 				margin-bottom: 5px;
+		// 			}
+		// 			.header .info {
+		// 				font-size: 10pt;
+		// 				color: #666;
+		// 			}
+		// 			table {
+		// 				width: 100%;
+		// 				border-collapse: collapse;
+		// 				margin-top: 10px;
+		// 			}
+		// 			th {
+		// 				background-color: #1e293b;
+		// 				color: white;
+		// 				padding: 10px 8px;
+		// 				text-align: left;
+		// 				font-weight: bold;
+		// 				font-size: 11pt;
+		// 				border: 1px solid #1e293b;
+		// 			}
+		// 			td {
+		// 				padding: 8px;
+		// 				border: 1px solid #ddd;
+		// 				font-size: 10pt;
+		// 			}
+		// 			tr:nth-child(even) {
+		// 				background-color: #f8fafc;
+		// 			}
+		// 			tr:hover {
+		// 				background-color: #e2e8f0;
+		// 			}
+		// 			.footer {
+		// 				margin-top: 15px;
+		// 				text-align: center;
+		// 				font-size: 9pt;
+		// 				color: #666;
+		// 			}
+		// 			@media print {
+		// 				body { 
+		// 					print-color-adjust: exact;
+		// 					-webkit-print-color-adjust: exact;
+		// 				}
+		// 			}
+		// 		</style>
+		// 	</head>
+		// 	<body>
+		// 		<div class="header">
+		// 			<h1>Катталган адамдардын тизмеси</h1>
+		// 			<div class="info">
+		// 				Басып чыгарылган күнү: ${currentDate} | Бардыгы: ${filtered.length} адам
+		// 			</div>
+		// 		</div>
+		// 		<table>
+		// 			<thead>
+		// 				<tr>
+		// 					<th>Аты</th>
+		// 					<th>Фамилия</th>
+		// 					<th>Жыл</th>
+		// 					<th>Телефон</th>
+		// 					<th>Жынысы</th>
+		// 					<th>Прописка</th>
+		// 					<th>Адрес</th>
+		// 				</tr>
+		// 			</thead>
+		// 			<tbody>
+		// 				${filtered
+		// 					.map(
+		// 						(user) => `
+		// 					<tr>
+		// 						<td>${user.firstName || ""}</td>
+		// 						<td>${user.lastName || ""}</td>
+		// 						<td>${user.year || ""}</td>
+		// 						<td>${user.phone || ""}</td>
+		// 						<td>${user.gender || ""}</td>
+		// 						<td>${user.city || ""}</td>
+		// 						<td>${user.address || ""}</td>
+		// 					</tr>
+		// 				`
+		// 					)
+		// 					.join("")}
+		// 			</tbody>
+		// 		</table>
+		// 		<div class="footer">
+		// 			Документ автоматтык түрдө түзүлгөн
+		// 		</div>
+		// 	</body>
+		// 	</html>
+		// `;
 
-		printWindow.document.write(htmlContent);
+		// printWindow.document.write(htmlContent);
 		printWindow.document.close();
 
 		// Басып чыгаруу диалогун автоматтык ачуу
@@ -322,17 +322,17 @@ export default function HomePages() {
 					{[
 						{
 							label: "Бардыгы",
-							value: users.length,
+							// value: users.length,
 							color: "from-blue-500 to-indigo-500",
 						},
 						{
 							label: "Эркектер",
-							value: maleCount,
+							// value: maleCount,
 							color: "from-blue-400 to-blue-600",
 						},
 						{
 							label: "Аялдар",
-							value: femaleCount,
+							// value: femaleCount,
 							color: "from-pink-400 to-pink-600",
 						},
 					].map((card) => (
@@ -343,7 +343,7 @@ export default function HomePages() {
 								<div>
 									<p className="text-slate-400 text-sm">{card.label}</p>
 									<p className="text-3xl font-bold mt-1 text-white">
-										{card.value}
+										{/* {card.value} */}
 									</p>
 								</div>
 								<div
@@ -375,11 +375,11 @@ export default function HomePages() {
 							onChange={(e) => setCityFilter(e.target.value)}
 							className="w-full px-3 py-2 rounded-xl border border-slate-600 bg-slate-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
 							<option value="all">Бардыгы</option>
-							{cities.map((city) => (
+							{/* {cities.map((city) => (
 								<option key={city} value={city.toLowerCase()}>
 									{city}
 								</option>
-							))}
+							))} */}
 						</select>
 					</div>
 
@@ -391,11 +391,11 @@ export default function HomePages() {
 							onChange={(e) => setYearFilter(e.target.value)}
 							className="w-full px-3 py-2 rounded-xl border border-slate-600 bg-slate-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
 							<option value="all">Бардыгы</option>
-							{years.map((year) => (
+							{/* {years.map((year) => (
 								<option key={year} value={year}>
 									{year}
 								</option>
-							))}
+							))} */}
 						</select>
 					</div>
 				</div>
@@ -415,7 +415,7 @@ export default function HomePages() {
 							}`}>
 							Бардыгы
 						</button>
-						{letterCounts.map(({ letter, count }) => (
+						{/* {letterCounts.map(({ letter, count }) => (
 							<button
 								key={letter}
 								onClick={() => setLetterFilter(letter)}
@@ -431,8 +431,8 @@ export default function HomePages() {
 								{/* {count > 0 && (
 									<span className="ml-1.5 text-xs opacity-75">({count})</span>
 								)} */}
-							</button>
-						))}
+							{/* </button> */}
+						{/* ))}  */}
 					</div>
 				</div>
 
@@ -446,7 +446,7 @@ export default function HomePages() {
 					/>
 					<button
 						onClick={exportToPDF}
-						disabled={filtered.length === 0}
+						// disabled={filtered.length === 0}
 						className="px-6 py-3 rounded-2xl bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
 						<FileDown className="w-5 h-5" />
 						PDF кылып сактоо
@@ -455,7 +455,7 @@ export default function HomePages() {
 
 				<div className="mb-3 flex gap-1 text-white text-sm">
 					Тизме:{" "}
-					<span className="font-semibold text-white">{filtered.length}</span>{" "}
+					{/* <span className="font-semibold text-white">{filtered.length}</span>{" "} */}
 					адам
 				</div>
 
@@ -481,7 +481,7 @@ export default function HomePages() {
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-slate-700">
-							{loading ? (
+							{/* {loading ? (
 								<tr>
 									<td colSpan={7} className="p-10 text-center text-gray-400">
 										<div className="flex items-center justify-center gap-2">
@@ -541,7 +541,7 @@ export default function HomePages() {
 											: "Маалымат жок"}
 									</td>
 								</tr>
-							)}
+							)} */}
 						</tbody>
 					</table>
 				</div>

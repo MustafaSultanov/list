@@ -34,45 +34,45 @@ export default function Admin() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const fetchUsers = async () => {
-		try {
-			setLoading(true);
-			setError(null);
-			// const res = await fetch("/api/users");
-			const res = await fetch("/apiss/users");
-			const data = await res.json();
+	// const fetchUsers = async () => {
+	// 	try {
+	// 		setLoading(true);
+	// 		setError(null);
+	// 		// const res = await fetch("/api/users");
+	// 		const res = await fetch("/apiss/users");
+	// 		const data = await res.json();
 
-			let userData = [];
-			if (Array.isArray(data)) {
-				userData = data;
-			} else if (data?.items && Array.isArray(data.items)) {
-				userData = data.items;
-			} else if (data?.data && Array.isArray(data.data)) {
-				userData = data.data;
-			}
+	// 		let userData = [];
+	// 		if (Array.isArray(data)) {
+	// 			userData = data;
+	// 		} else if (data?.items && Array.isArray(data.items)) {
+	// 			userData = data.items;
+	// 		} else if (data?.data && Array.isArray(data.data)) {
+	// 			userData = data.data;
+	// 		}
 
-			// Convert _id to id and reverse to show newest first
-			const mappedUsers = userData
-				.map((user: { _id: number; id: number }) => ({
-					...user,
-					id: user._id || user.id,
-				}))
-				.reverse();
+	// 		// Convert _id to id and reverse to show newest first
+	// 		const mappedUsers = userData
+	// 			.map((user: { _id: number; id: number }) => ({
+	// 				...user,
+	// 				id: user._id || user.id,
+	// 			}))
+	// 			.reverse();
 
-			setUsers(mappedUsers);
-		} catch (error) {
-			console.error("Fetch error:", error);
-			setError("Маалыматтарды жүктөөдө ката кетти");
-			setUsers([]);
-		} finally {
-			setLoading(false);
-		}
-	};
+	// 		setUsers(mappedUsers);
+	// 	} catch (error) {
+	// 		console.error("Fetch error:", error);
+	// 		setError("Маалыматтарды жүктөөдө ката кетти");
+	// 		setUsers([]);
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
 
-	useEffect(() => {
-		fetchUsers();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	// useEffect(() => {
+	// 	fetchUsers();
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, []);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -80,85 +80,85 @@ export default function Admin() {
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = async () => {
-		try {
-			setLoading(true);
-			setError(null);
+	// const handleSubmit = async () => {
+	// 	try {
+	// 		setLoading(true);
+	// 		setError(null);
 
-			if (editingId) {
-				await api.patch(`/${editingId}`, form);
-			} else {
-				await api.post("", form);
-			}
+	// 		if (editingId) {
+	// 			await api.patch(`/${editingId}`, form);
+	// 		} else {
+	// 			await api.post("", form);
+	// 		}
 
-			setForm({
-				firstName: "",
-				lastName: "",
-				phone: "",
-				gender: "",
-				city: "",
-				address: "",
-				inn: "",
-			});
-			setEditingId(null);
-			setModalOpen(false);
-			await fetchUsers();
-		} catch (error) {
-			console.error("Submit error:", error);
-			setError("Сактоодо ката кетти");
-		} finally {
-			setLoading(false);
-		}
-	};
+	// 		setForm({
+	// 			firstName: "",
+	// 			lastName: "",
+	// 			phone: "",
+	// 			gender: "",
+	// 			city: "",
+	// 			address: "",
+	// 			inn: "",
+	// 		});
+	// 		setEditingId(null);
+	// 		setModalOpen(false);
+	// 		await fetchUsers();
+	// 	} catch (error) {
+	// 		console.error("Submit error:", error);
+	// 		setError("Сактоодо ката кетти");
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
 
-	const handleEdit = (user: User) => {
-		if (!user.id) {
-			setError("ID жок - өзгөртүү мүмкүн эмес");
-			return;
-		}
-		setForm({
-			firstName: user.firstName || "",
-			lastName: user.lastName || "",
-			phone: user.phone || "",
-			gender: user.gender || "",
-			city: user.city || "",
-			address: user.address || "",
-			inn: user.inn || "",
-		});
-		setEditingId(user.id);
-		setModalOpen(true);
-		setError(null);
-	};
+	// const handleEdit = (user: User) => {
+	// 	if (!user.id) {
+	// 		setError("ID жок - өзгөртүү мүмкүн эмес");
+	// 		return;
+	// 	}
+	// 	setForm({
+	// 		firstName: user.firstName || "",
+	// 		lastName: user.lastName || "",
+	// 		phone: user.phone || "",
+	// 		gender: user.gender || "",
+	// 		city: user.city || "",
+	// 		address: user.address || "",
+	// 		inn: user.inn || "",
+	// 	});
+	// 	setEditingId(user.id);
+	// 	setModalOpen(true);
+	// 	setError(null);
+	// };
 
-	const openDeleteModal = (user: User) => {
-		if (!user.id) {
-			setError("ID жок - өчүрүү мүмкүн эмес");
-			return;
-		}
-		setUserToDelete(user);
-		setDeleteModalOpen(true);
-	};
+	// const openDeleteModal = (user: User) => {
+	// 	if (!user.id) {
+	// 		setError("ID жок - өчүрүү мүмкүн эмес");
+	// 		return;
+	// 	}
+	// 	setUserToDelete(user);
+	// 	setDeleteModalOpen(true);
+	// };
 
-	const handleDelete = async () => {
-		if (!userToDelete?.id) {
-			setError("ID жок - өчүрүү мүмкүн эмес");
-			return;
-		}
+	// const handleDelete = async () => {
+	// 	if (!userToDelete?.id) {
+	// 		setError("ID жок - өчүрүү мүмкүн эмес");
+	// 		return;
+	// 	}
 
-		try {
-			setLoading(true);
-			setError(null);
-			await api.delete(`/${userToDelete.id}`);
-			setDeleteModalOpen(false);
-			setUserToDelete(null);
-			await fetchUsers();
-		} catch (error) {
-			console.error("Delete error:", error);
-			setError("Өчүрүүдө ката кетти");
-		} finally {
-			setLoading(false);
-		}
-	};
+	// 	try {
+	// 		setLoading(true);
+	// 		setError(null);
+	// 		await api.delete(`/${userToDelete.id}`);
+	// 		setDeleteModalOpen(false);
+	// 		setUserToDelete(null);
+	// 		await fetchUsers();
+	// 	} catch (error) {
+	// 		console.error("Delete error:", error);
+	// 		setError("Өчүрүүдө ката кетти");
+	// 	} finally {
+	// 		setLoading(false);
+	// 	}
+	// };
 
 	const filtered = Array.isArray(users)
 		? users.filter((u) => {
@@ -344,13 +344,13 @@ export default function Admin() {
 										<td className="p-4 text-right">
 											<div className="flex justify-end gap-2">
 												<button
-													onClick={() => handleEdit(user)}
+													// onClick={() => handleEdit(user)}
 													className="px-3 py-2 bg-yellow-600/70 hover:bg-yellow-600 text-white rounded-xl text-sm transition">
 													<Pencil className="w-4 h-4 inline-block mr-1" />
 													Өзгөртүү
 												</button>
 												<button
-													onClick={() => openDeleteModal(user)}
+													// onClick={() => openDeleteModal(user)}
 													className="px-3 py-2 bg-red-600/70 hover:bg-red-600 text-white rounded-xl text-sm transition">
 													<Trash2 className="w-4 h-4 inline-block mr-1" />
 													Өчүрүү
@@ -464,7 +464,7 @@ export default function Admin() {
 									Жабуу
 								</button>
 								<button
-									onClick={handleSubmit}
+									// onClick={handleSubmit}
 									disabled={
 										loading || !form.firstName || !form.lastName || !form.gender
 									}
@@ -512,7 +512,7 @@ export default function Admin() {
 										Отмена
 									</button>
 									<button
-										onClick={handleDelete}
+										// onClick={handleDelete}
 										disabled={loading}
 										className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 rounded-xl text-white hover:from-red-700 hover:to-red-800 transition shadow-md hover:shadow-lg disabled:opacity-50">
 										{loading ? (
