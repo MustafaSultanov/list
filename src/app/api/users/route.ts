@@ -5,7 +5,7 @@ const API_BASE = "https://cf0e92d0f8fcab91.mokky.dev/list";
 // GET - Бардык маалыматтарды алуу (limit=500 менен)
 export async function GET() {
 	try {
-		const response = await fetch(`${API_BASE}?limit=1000`, {
+		const response = await fetch(`${API_BASE}?w=1000`, {
 			cache: "no-store",
 		});
 
