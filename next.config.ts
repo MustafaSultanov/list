@@ -16,7 +16,7 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
       },
       {
-        source: "/apssi/:path*", 
+        source: "/apssi/:path*",
         destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/:path*`,
       },
     ];
