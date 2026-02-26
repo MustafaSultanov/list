@@ -61,7 +61,7 @@ export default function HomePages() {
 			try {
 				setLoading(true);
 				// 🔹 Тышкы API'ге эмес, өзүбүздүн прокси аркылуу чакырабыз
-				const res = await fetch("/apiss/users");
+				const res = await fetch("/api/users");
 				const data = await res.json();
 
 				if (!isMounted) return;
